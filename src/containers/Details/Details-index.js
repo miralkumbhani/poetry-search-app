@@ -11,14 +11,14 @@ class Details extends Component {
     choice: 'title',
     title: '',
     author: '',
-    lines: ''
+    lines: '',
+    linecount: 0
   };
 
   urlString = 'https://thundercomb-poetry-db-v1.p.rapidapi.com/' ;
 
   handleSearch = event => {
-    debugger;
-    if (this.state.choice && (this.state.title || this.state.author || this.state.lines)) {
+    if (this.state.choice && (this.state.title || this.state.author || this.state.lines || this.state.linecount)) {
       switch (this.state.choice) {
         case 'title':
           this.urlString = this.urlString + this.state.choice + '/' + this.state.title;
@@ -30,6 +30,10 @@ class Details extends Component {
 
         case 'lines':
           this.urlString = this.urlString + this.state.choice + '/' + this.state.lines;
+          break;
+
+        case 'linecount':
+          this.urlString = this.urlString + this.state.choice + '/' + this.state.linecount;
           break;
 
         default:
@@ -90,6 +94,10 @@ class Details extends Component {
         this.setState({ lines: event.target.value });
         break;
 
+      case 'linecount':
+        this.setState({ linecount: event.target.value });
+        break;
+
       default:
         this.setState({ title: event.target.value });
         break;
@@ -119,12 +127,16 @@ class Details extends Component {
           <div className="form">
             <div className="radio-btn-group form-group">
               <p>Please select what you want to search from the below:</p>
-              <input type="radio" name="choice" value="title" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'title'}/>
-              <label className="form-label" htmlFor="choice">Title</label>
-              <input type="radio" name="choice" value="author" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'author'}/>
-              <label className="form-label" htmlFor="choice">Author</label>
-              <input type="radio" name="choice" value="lines" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'lines'}/>
-              <label className="form-label" htmlFor="choice">Lines</label>
+              <div className="radio-btn-container">
+                <input type="radio" name="choice" value="title" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'title'}/>
+                <label className="form-label" htmlFor="choice">Title</label>
+                <input type="radio" name="choice" value="author" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'author'}/>
+                <label className="form-label" htmlFor="choice">Author</label>
+                <input type="radio" name="choice" value="lines" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'lines'}/>
+                <label className="form-label" htmlFor="choice">Lines</label>
+                <input type="radio" name="choice" value="linecount" onChange={this.handleRadioBtnChange.bind(this)} checked={this.state.choice === 'linecount'}/>
+                <label className="form-label" htmlFor="choice">Line Count</label>
+                </div>
             </div>
             <div className="form-group">
               <input className="form-control" type="text" placeholder="Search Poem Title/Author/Lines Here..." value={this.state.inputVal} onChange={this.handleInputChange.bind(this)} />
