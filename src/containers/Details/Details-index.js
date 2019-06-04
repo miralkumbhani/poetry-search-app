@@ -70,7 +70,6 @@ class Details extends Component {
             this.setState({ showBlock: false });
             toast.error('Data not found.');
           } else if (json.length !== 1) {
-            // this.handleReset();
             this.setListofResults(json);
             toast.info('There are ' + json.length + ' results found for your search!', { autoClose: 2000 });
           }
