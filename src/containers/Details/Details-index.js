@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Details.css';
+import Results from '../Results/Results-index';
 class Details extends Component {
   state = {
     showBlock: false,
@@ -64,7 +65,7 @@ class Details extends Component {
             this.setState({ showBlock: false });
             toast.error('Data not found.');
           } else if (json.length !== 1) {
-            this.setState({ showBlock: false });
+            this.handleReset();
             toast.info('There are ' + json.length + ' results found for your search!', { autoClose: 3000 });
           }
         }
@@ -118,6 +119,10 @@ class Details extends Component {
     this.urlString = 'https://thundercomb-poetry-db-v1.p.rapidapi.com/';
   }
 
+  callBackDetails = (data) => {
+    this.handleReset();
+  }
+
   render() {
     return (
       <div className="form-container">
@@ -153,43 +158,7 @@ class Details extends Component {
         }
         {
           this.state.showBlock && this.state.details &&
-          <div className="details-container">
-            <div className="label-container">
-              <label htmlFor="title" className="label-text">
-                Title
-              </label>:
-              <span name="title" className="content-text">
-                {this.state.details.title}
-              </span><br />
-            </div>
-            <div className="label-container">
-              <label htmlFor="author" className="label-text">
-                Author
-              </label>:
-              <span name="author" className="content-text">
-                {this.state.details.author}
-              </span><br />
-            </div>
-            <div className="label-container">
-              <label htmlFor="linecount" className="label-text">
-                Line Count
-              </label>:
-              <span name="linecount" className="content-text">
-                {this.state.details.linecount}
-              </span><br />
-            </div>
-            <div className="label-container">
-              <label htmlFor="lines" className="label-text">
-                Lines
-              </label>:
-              { this.state.details.lines && this.state.details.lines.map((item, index) => {
-                return <p key={index}>{item}</p>
-              })}
-            </div>
-            <div className="search-btn-container mb-3">
-              <button className="search-btn" onClick={this.handleReset.bind(this)}>Go Back</button>
-            </div>
-          </div>
+          <Results callBackFromDetails={this.callBackDetails} stateObj={this.state}/>
         }
       </div>
     )
