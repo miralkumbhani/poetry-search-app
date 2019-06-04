@@ -4,25 +4,30 @@ class Results extends Component {
   state = {
     showBlock: false,
     showErrorBlock: false,
+    showList: false,
     inputVal: '',
     details: [],
     choice: 'title',
     title: '',
     author: '',
     lines: '',
-    linecount: 0
+    linecount: 0,
+    listOfResults: []
   };
 
   handleReset = () => {
     this.setState({
       showBlock: false,
       showErrorBlock: false,
+      showList: false,
       inputVal: '',
       details: [],
       choice: 'title',
       title: '',
       author: '',
-      lines: ''
+      lines: '',
+      linecount: 0,
+      listOfResults: []
     });
     this.urlString = 'https://thundercomb-poetry-db-v1.p.rapidapi.com/';
     this.props.callBackFromDetails(this.state);

@@ -3,26 +3,31 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Details.css';
 import Results from '../Results/Results-index';
+import Lists from '../Lists/Lists-index';
 class Details extends Component {
   state = {
     showBlock: false,
     showErrorBlock: false,
+    showList: false,
     inputVal: '',
     details: [],
     choice: 'title',
     title: '',
     author: '',
     lines: '',
-    linecount: 0
+    linecount: 0,
+    listOfResults: []
   };
 
   urlString = 'https://thundercomb-poetry-db-v1.p.rapidapi.com/' ;
 
   handleSearch = event => {
+    this.setState({ showList: false, listOfResults: [] });
+    this.urlString = 'https://thundercomb-poetry-db-v1.p.rapidapi.com/';
     if (this.state.choice && (this.state.title || this.state.author || this.state.lines || this.state.linecount)) {
       switch (this.state.choice) {
         case 'title':
-          this.urlString = this.urlString + this.state.choice + '/' + this.state.title;
+          this.urlString = this.urlString + this.state.choice + '/' + this.state.title + ':abs';
           break;
 
         case 'author':
@@ -65,8 +70,9 @@ class Details extends Component {
             this.setState({ showBlock: false });
             toast.error('Data not found.');
           } else if (json.length !== 1) {
-            this.handleReset();
-            toast.info('There are ' + json.length + ' results found for your search!', { autoClose: 3000 });
+            // this.handleReset();
+            this.setListofResults(json);
+            toast.info('There are ' + json.length + ' results found for your search!', { autoClose: 2000 });
           }
         }
       });
@@ -77,7 +83,7 @@ class Details extends Component {
   }
 
   handleRadioBtnChange = event => {
-    this.setState({ choice: event.target.value });
+    this.setState({ choice: event.target.value, inputVal: '' });
   }
 
   handleInputChange = event => {
@@ -109,18 +115,28 @@ class Details extends Component {
     this.setState({
       showBlock: false,
       showErrorBlock: false,
+      showList: false,
       inputVal: '',
       details: [],
       choice: 'title',
       title: '',
       author: '',
-      lines: ''
+      lines: '',
+      listOfResults: []
     });
     this.urlString = 'https://thundercomb-poetry-db-v1.p.rapidapi.com/';
   }
 
+  setListofResults = (data) => {
+    this.setState({ listOfResults: data, showList: true });
+  }
+
   callBackDetails = (data) => {
     this.handleReset();
+  }
+
+  callBackForLists = (value) => {
+    this.setState({ showBlock: true, showList: false, details: value });
   }
 
   render() {
@@ -158,7 +174,11 @@ class Details extends Component {
         }
         {
           this.state.showBlock && this.state.details &&
-          <Results callBackFromDetails={this.callBackDetails} stateObj={this.state}/>
+          <Results callBackFromDetails={this.callBackDetails} stateObj={this.state} />
+        }
+        {
+          this.state.showList && this.state.listOfResults &&
+          <Lists callBackDetails={this.callBackForLists} stateObj={this.state} />
         }
       </div>
     )
