@@ -1,0 +1,21 @@
+.list-of-links {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.ordered-list {
+  text-align: left;
+  margin-left: 130px;
+  list-style-position: inside;
+}
+
+.list-item {
+  margin-top: 5px;
+}
+
+.result-link {
+  color: #4688f1;
+  text-decoration: underline;
+  cursor: pointer;
+}
